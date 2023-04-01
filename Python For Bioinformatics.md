@@ -13,56 +13,32 @@ DNA in text files is represented as a string with sequence of [specific characte
 *Examples of Functions Bioinformatics:* 
 
 1) Counting bases in a DNA sequence (Tetranucleotide Frequency): 
-   ![Graphical user interface, text, application
-
-Description automatically generated](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.001.png)
+   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.001.png)
 1) Reverse Complement of DNA:
-   ![Chart, scatter chart
-
-Description automatically generated](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.002.png)
+   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.002.png)
 1) Computing GC Content: A higher GC content level indicates a relatively higher melting temperature in molecular biology, and DNA sequences that encode proteins tend to be found in GC-rich regions.
-   ![Graphical user interface, text, application, email
-
-Description automatically generated](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.003.png)
+   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.003.png)
 1) Transcribing DNA into mRNA: regions of DNA must be transcribed into a form of RNA called messenger RNA (mRNA).
-   ![Graphical user interface, text, application
-
-Description automatically generated](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.004.png)
+   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.004.png)
 1) Translating mRNA into Protein: mRNA makes protein. 
-   ![Graphical user interface, text, application
-
-Description automatically generated](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.005.png)
+   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.005.png)
    Note on points 4,5: these functions can be done using string replacement and regex but using BioPython is the recommended approach.
 1) Finding Open Reading Frames ORF:  finding a region in DNA or RNA. 
    using regex: This region starts with M and ends with (\*).
-   ![Diagram
-
-Description automatically generated](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.006.png)
+   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.006.png)
    the following section is applied after a series of transcribing and translating steps
-   ![Graphical user interface, text, application, table
-
-Description automatically generated with medium confidence](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.007.png)
+   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.007.png)
 
 
 
 
 *Sequence file extensions:*
 
-![Graphical user interface, application, Teams
-
-Description automatically generated](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.008.png)
+(Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.008.png)
 
 To read or write to a file: 
 
-![Graphical user interface, text, application, email
-
-Description automatically generated](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.009.png)
+(Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.009.png)
 
 For compressed a fastq files:
-
-![Graphical user interface, text, application
-
-Description automatically generated](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.010.png)
-
-General
-![{"HashCode":-601688020,"Height":792.0,"Width":612.0,"Placement":"Footer","Index":"Primary","Section":1,"Top":0.0,"Left":0.0}](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.011.png)
+(Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.010.png)
