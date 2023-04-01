@@ -13,21 +13,23 @@ DNA in text files is represented as a string with sequence of [specific characte
 *Examples of Functions Bioinformatics:* 
 
 1) Counting bases in a DNA sequence (Tetranucleotide Frequency): 
-   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.001.png)
+   ![Code](Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.001.png)
 1) Reverse Complement of DNA:
-   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.002.png)
+   ![Code](./Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.002.png)
 1) Computing GC Content: A higher GC content level indicates a relatively higher melting temperature in molecular biology, and DNA sequences that encode proteins tend to be found in GC-rich regions.
-   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.003.png)
+  ![Code] (./Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.003.png)
 1) Transcribing DNA into mRNA: regions of DNA must be transcribed into a form of RNA called messenger RNA (mRNA).
-   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.004.png)
+  ![Code] (./Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.004.png)
 1) Translating mRNA into Protein: mRNA makes protein. 
-   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.005.png)
+  ![Code] (./Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.005.png)
    Note on points 4,5: these functions can be done using string replacement and regex but using BioPython is the recommended approach.
 1) Finding Open Reading Frames ORF:  finding a region in DNA or RNA. 
    using regex: This region starts with M and ends with (\*).
-   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.006.png)
+  ![Code] (./Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.006.png)
+   
    the following section is applied after a series of transcribing and translating steps
-   (Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.007.png)
+   
+   ![Code](./Aspose.Words.dbe14a37-9efa-4589-ae6f-146889bcecbe.007.png)
 
 
 
