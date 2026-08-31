@@ -46,6 +46,7 @@ print("most common:", sorted(protein.count_amino_acids().items(),
                              key=lambda kv: -kv[1])[:3])
 ```
 
+Out:
 ```
 AGK | AlaGlyLys
 weight: 4736.4 daltons
@@ -80,6 +81,7 @@ print("most hydrophobic window starts at residue", profile.index(max(profile)) +
       "score", round(max(profile), 2))
 ```
 
+Out:
 ```
 GRAVY (whole protein): 0.37
 windows: 38
@@ -107,6 +109,7 @@ print("pI:", round(protein.isoelectric_point(), 2))
 print("charge at pH 7:", round(protein.charge_at_pH(7.0), 2))
 ```
 
+Out:
 ```
 pI: 5.73
 charge at pH 7: -0.66
@@ -141,6 +144,7 @@ print("first CA at xyz:", [round(float(x), 2) for x in residues[0]["CA"].coord])
 print("CA1 to CA2 distance:", round(float(residues[0]["CA"] - residues[1]["CA"]), 2), "angstroms")
 ```
 
+Out:
 ```
 chains: 1 residues: 46 atoms: 327
 sequence: TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN
@@ -175,6 +179,7 @@ for line in open("data/sample.pdb"):
     print(f"{line[:5]} residues {start.strip()}-{end.strip()}")
 ```
 
+Out:
 ```
 HELIX residues 7-19
 HELIX residues 23-30
@@ -200,6 +205,7 @@ helix, turn, sheet = protein.secondary_structure_fraction()
 print(f"helix {helix:.0%}  turn {turn:.0%}  sheet {sheet:.0%}")
 ```
 
+Out:
 ```
 helix 15%  turn 33%  sheet 37%
 ```
@@ -229,6 +235,7 @@ sites = [(m.start(1) + 1, m.group(1)) for m in re.finditer(r"(?=(N[^P][ST]))", p
 print("sites:", sites)
 ```
 
+Out:
 ```
 sites: [(10, 'NST')]
 ```

@@ -42,6 +42,7 @@ print("gene length:", len(gene))
 print("product:", gene.translate())
 ```
 
+Out:
 ```
 gene length: 39
 product: MAIVMGR*KGAR*
@@ -68,6 +69,7 @@ mrna = gene[:6] + gene[18:]       # splice the intron out
 print("spliced     :", mrna.translate())
 ```
 
+Out:
 ```
 with intron : MAVSP*IVMGR*
 spliced     : MAIVMGR*
@@ -97,6 +99,7 @@ print("transcriptome layer:", dna.transcribe())
 print("proteome layer     :", dna.translate())
 ```
 
+Out:
 ```
 genome layer       : ATGGCCATTGTAATGGGCCGCTGA
 transcriptome layer: AUGGCCAUUGUAAUGGGCCGCUGA
@@ -120,6 +123,7 @@ for pos, ref, alt in variants:
     print(f"position {pos}: {ref} -> {alt}")
 ```
 
+Out:
 ```
 position 6: C -> T
 ```
@@ -146,6 +150,7 @@ for name, gt in genotypes.items():
     print(f"{name}: {gt}  {kind}, alternate copies = {int(a) + int(b)}")
 ```
 
+Out:
 ```
 sample1: 0/0  homozygous, alternate copies = 0
 sample2: 0/1  heterozygous, alternate copies = 1
@@ -170,6 +175,7 @@ print("read length:", len(reads[0].seq))
 print("total bases sequenced:", sum(len(r.seq) for r in reads))
 ```
 
+Out:
 ```
 reads: 2
 read length: 36
@@ -199,6 +205,7 @@ print("known bases:", len(scaffold) - scaffold.count("N"))
 print("gap fraction:", f"{scaffold.count('N') / len(scaffold):.0%}")
 ```
 
+Out:
 ```
 scaffold length: 40
 known bases: 20
@@ -225,6 +232,7 @@ print("max depth:", max(depth.values()))
 print("depth at 125:", depth[125], "| at 505:", depth[505], "| at 400:", depth[400])
 ```
 
+Out:
 ```
 bases covered: 92
 max depth: 3
@@ -252,6 +260,7 @@ print(f"{variant['chrom']}:{variant['pos']} {variant['ref']}>{variant['alt']}"
       f" ({variant['build']})")
 ```
 
+Out:
 ```
 chr1:155235252 C>T (GRCh38)
 ```
@@ -275,6 +284,7 @@ annotation["length"] = annotation["end"] - annotation["start"]
 print(annotation)
 ```
 
+Out:
 ```
   chrom  start  end   feature  length
 0  chr1    100  250  promoter     150

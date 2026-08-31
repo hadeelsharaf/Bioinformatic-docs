@@ -91,6 +91,7 @@ protein = rna.translate()   # 3 bases become 1 amino acid
 print(dna, rna, protein, sep="\n")
 ```
 
+Out:
 ```
 ATGGCCATTGTAATGGGCCGCTGA
 AUGGCCAUUGUAAUGGGCCGCUGA
@@ -119,6 +120,7 @@ print(gc_fraction(seq))                      # default: ambiguous bases removed
 print(gc_fraction(seq, ambiguous="ignore"))  # ambiguous bases kept in the total
 ```
 
+Out:
 ```
 ['N', 'R', 'Y']
 0.5
@@ -146,6 +148,7 @@ print(dna[::-1])                  # reversed only  -> WRONG
 print(dna.reverse_complement())   # reversed and complemented -> right
 ```
 
+Out:
 ```
 CCGGTA
 GGCCAT
@@ -176,6 +179,7 @@ start, end = 3, 5
 print(seq[start - 1:end])
 ```
 
+Out:
 ```
 GTA
 GTA
@@ -205,6 +209,7 @@ for rec in SeqIO.parse("data/sample.fasta", "fasta"):
     print(rec.id, len(rec.seq))
 ```
 
+Out:
 ```
 seq1 39
 seq2 36
@@ -237,6 +242,7 @@ for rec in SeqIO.parse("data/sample.fastq", "fastq"):
     print(rec.id, "mean Q =", round(sum(q) / len(q), 1), "min Q =", min(q))
 ```
 
+Out:
 ```
 read1 mean Q = 27.0 min Q = 2
 read2 mean Q = 40.0 min Q = 40
@@ -264,6 +270,7 @@ with gzip.open("data/sample.fastq.gz", "rt") as handle:
         print(rec.id, len(rec.seq))
 ```
 
+Out:
 ```
 read1 36
 read2 36
@@ -315,6 +322,7 @@ print(bed)
 print(bed["end"].sub(bed["start"]).sum(), "bases covered")
 ```
 
+Out:
 ```
   chrom  start  end      name
 0  chr1    100  250  promoter
@@ -351,6 +359,7 @@ print(Seq("ATGGCCTGA").translate())                            # standard
 print(Seq("ATGGCCTGA").translate(table="Vertebrate Mitochondrial"))
 ```
 
+Out:
 ```
 ['TAA', 'TAG', 'TGA']
 M
@@ -380,6 +389,7 @@ print(round(gc_fraction("GCGCGCGCGGCGGCGCGCGCGGCGCGCGCGGCGCGC") * 100, 1))
 # from Bio.SeqUtils import GC   # <- AttributeError on modern Biopython
 ```
 
+Out:
 ```
 100.0
 ```
@@ -414,6 +424,7 @@ for strand, frame, orf in find_orfs(record.seq, min_aa=5):
     print(strand, frame, orf)
 ```
 
+Out:
 ```
 1 0 MAIVMGR
 ```
@@ -443,6 +454,7 @@ print(alignment)
 print("score:", alignment.score)
 ```
 
+Out:
 ```
 target            0 ACGTACGT 8
                   0 |||-|||| 8
@@ -474,6 +486,7 @@ def kmers(seq, k):
 print(kmers("ACGTACGTAC", 3).most_common(3))
 ```
 
+Out:
 ```
 [('ACG', 2), ('CGT', 2), ('GTA', 2)]
 ```
@@ -507,6 +520,7 @@ print(rec.id, len(rec.seq), "bp")
 print(rec.description)
 ```
 
+Out:
 ```
 NC_045512.2 29903 bp
 NC_045512.2 Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome
@@ -563,6 +577,7 @@ print(df)
 # df.plot.bar(x="id", y="gc"); import matplotlib.pyplot as plt; plt.savefig("gc.png")
 ```
 
+Out:
 ```
      id  length     gc
 0  seq1      39  0.564
@@ -586,6 +601,7 @@ arr = np.frombuffer(big.encode(), dtype="S1")   # no copy, one byte per base
 print(int((arr == b"G").sum() + (arr == b"C").sum()))
 ```
 
+Out:
 ```
 500000
 ```
@@ -670,6 +686,7 @@ for rec in SeqIO.parse("data/sample.fastq", "fastq"):
     print(f"{rec.id:6} mean {sum(q) / len(q):5.1f}  bases below Q20: {bad}/{len(q)}")
 ```
 
+Out:
 ```
 read1  mean  27.0  bases below Q20: 6/36
 read2  mean  40.0  bases below Q20: 0/36
@@ -701,6 +718,7 @@ for rec in SeqIO.parse("data/sample.fastq", "fastq"):
     print(f"{rec.id:6} {len(rec.seq)} -> {len(trim_tail(rec).seq)} bases")
 ```
 
+Out:
 ```
 read1  36 -> 30 bases
 read2  36 -> 36 bases
@@ -754,6 +772,7 @@ print("total:", len(seqs), " unique:", len(counts))
 print("duplicate rate:", f"{1 - len(counts) / len(seqs):.0%}")
 ```
 
+Out:
 ```
 total: 3  unique: 2
 duplicate rate: 33%
@@ -789,6 +808,7 @@ fields = dict(kv.split("=") for kv in info.split(";"))
 print(f"{chrom}:{pos} {ref}>{alt}  qual={qual}  depth={fields['DP']}")
 ```
 
+Out:
 ```
 chr1:150 A>G  qual=60  depth=32
 ```
@@ -819,6 +839,7 @@ print("mean depth:", round(sum(depth.values()) / len(depth), 2))
 print("depth at 125:", depth[125], "| at 505:", depth[505], "| at 400:", depth[400])
 ```
 
+Out:
 ```
 bases covered: 92
 max depth: 3
@@ -857,6 +878,7 @@ print(counts)
 print("reads assigned:", sum(counts.values()), "of", len(reads))
 ```
 
+Out:
 ```
 {'promoter': 2, 'exon1': 1, 'exon2': 1}
 reads assigned: 4 of 5
@@ -885,6 +907,7 @@ for gene, control, treated in [("geneA", 100, 400), ("geneB", 2, 8)]:
     print(f"{gene}: log2 fold change = {math.log2(treated / control)}")
 ```
 
+Out:
 ```
 geneA: log2 fold change = 2.0
 geneB: log2 fold change = 2.0
@@ -932,6 +955,7 @@ print("gc:", round(DNA("ACCGGGTTTTA").gc_content(), 4))
 print("shannon diversity:", round(alpha.shannon([4, 3, 2, 1]), 4))
 ```
 
+Out:
 ```
 {'ACG': 2, 'CGT': 2, 'GTA': 2, 'TAC': 2}
 gc: 0.4545
