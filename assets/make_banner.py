@@ -128,9 +128,8 @@ def cap_icon(x):
         f'stroke-width="2.4" stroke-linecap="round"/>')
 
 
-badge(TX, "28 runnable lessons", cell_icon)
-badge(TX + 275, "Biopython + scikit-bio", hex_icon)
-badge(TX + 590, "MIT licensed", cap_icon)
+badge(TX, "Biopython + scikit-bio", hex_icon)
+badge(TX + 315, "MIT licensed", cap_icon)
 
 add('</svg>')
 

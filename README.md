@@ -1,6 +1,6 @@
 ﻿<p align="center">
   <img src="assets/banner.svg" width="100%"
-       alt="Python for Bioinformatics. Learn by running the code, not by reading it. 28 runnable lessons, Biopython and scikit-bio, MIT licensed.">
+       alt="Python for Bioinformatics. Learn by running the code, not by reading it. Biopython and scikit-bio, MIT licensed.">
 </p>
 
 # Python for Bioinformatics 
