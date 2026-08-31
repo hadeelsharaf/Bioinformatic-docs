@@ -1,5 +1,7 @@
 ﻿# Python for Bioinformatics 
 
+> **New to bioinformatics but comfortable with Python?** Start with **[LEARN.md](LEARN.md)** — 20 short points, each with a snippet you can run. Sample files are in `data/`.
+
 Bioinformatics is the field that develops methods and software tools for understanding biological data. Units 6 and 7 in [this course](https://www.khanacademy.org/science/ap-biology) will help with understanding the *basics* of biology for this field.  
 
 Next-generation sequencing (NGS) is one of the fundamental technological developments. Whole-genome sequencing (WGS), restriction site-associated DNA sequencing (RAD-Seq), ribonucleic acid sequencing (RNA-Seq), chromatin immunoprecipitation sequencing (ChIP-Seq), and several other technologies are routinely used to investigate important biological problems. These are called high-throughput (HT) sequencing technologies. [See this](https://htseq.readthedocs.io/en/master/index.html) for a python package to help with the HT sequencing. 

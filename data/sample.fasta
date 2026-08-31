@@ -1,0 +1,6 @@
+>seq1 short DNA that contains an open reading frame
+ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG
+>seq2 GC-rich stretch
+GCGCGCGCGGCGGCGCGCGCGGCGCGCGCGGCGCGC
+>seq3 contains IUPAC ambiguity codes
+ACGTNNNRYACGTACGTKMACGT
