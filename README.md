@@ -1,4 +1,9 @@
-﻿# Python for Bioinformatics 
+﻿<p align="center">
+  <img src="assets/banner.svg" width="100%"
+       alt="Python for Bioinformatics. Learn by running the code, not by reading it. 28 runnable lessons, Biopython and scikit-bio, MIT licensed.">
+</p>
+
+# Python for Bioinformatics 
 
 > **New to bioinformatics but comfortable with Python?** Start with **[LEARN.md](LEARN.md)** — 28 short points, each with a snippet you can run.
 >
