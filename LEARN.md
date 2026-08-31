@@ -1,10 +1,13 @@
-# LEARN — Bioinformatics for people who already know Python
+﻿# LEARN — Bioinformatics for people who already know Python
 
 You know Python. You do not know biology. This file is the shortest path
 from there to being useful.
 
 Twenty points. Each one tells you **what it is**, **why you will hit it**,
 and gives a snippet you can paste and run.
+
+Companion files: [GLOSSARY.md](GLOSSARY.md) for the vocabulary that blocks
+people, and [PROTEINS.md](PROTEINS.md) for protein and structure work.
 
 ## How to run the snippets
 
@@ -52,6 +55,19 @@ say why.
 18. [Speed: pure Python loops die on a genome](#18-speed-pure-python-loops-die-on-a-genome)
 19. [Reproducibility: bioconda and workflow managers](#19-reproducibility-bioconda-and-workflow-managers)
 20. [Ethics and licensing](#20-ethics-and-licensing)
+
+**Part 5 — the NGS pipeline, stage by stage**
+21. [Quality control](#21-quality-control)
+22. [Trimming](#22-trimming)
+23. [Mapping](#23-mapping)
+24. [Duplicate marking](#24-duplicate-marking)
+25. [Variant calling](#25-variant-calling)
+26. [Coverage](#26-coverage)
+27. [RNA-seq counting](#27-rna-seq-counting)
+28. [Differential expression](#28-differential-expression)
+
+**Also here**
+- [Beyond Biopython: scikit-bio](#beyond-biopython-scikit-bio)
 
 ---
 
@@ -621,6 +637,320 @@ not coding mistakes.
   clinical claim can do real harm.
 
 Link: [GA4GH](https://www.ga4gh.org/) · [dbGaP](https://www.ncbi.nlm.nih.gov/gap/)
+
+---
+
+---
+
+# Part 5 — the NGS pipeline, stage by stage
+
+These eight stages sit between a sequencing machine and an answer. Knowing the
+names tells you what a paper's methods section is talking about.
+
+Be warned: **about half of this work is not Python.** The heavy stages are C
+programs you call from a shell. Where that is true below, the block is marked
+`SHELL, NOT RUN` and you get the Python that surrounds it instead. Dressing up a
+`bwa` command as Python would teach you nothing.
+
+## 21. Quality control
+
+Before anything else, look at your reads. How long are they, how good are the
+scores, does quality collapse at the end. The standard tool is **FastQC**, which
+produces a report, not data.
+
+Why you care: bad input silently produces confident, wrong output. QC is the
+cheapest bug prevention in the field.
+
+```python
+from Bio import SeqIO
+
+for rec in SeqIO.parse("data/sample.fastq", "fastq"):
+    q = rec.letter_annotations["phred_quality"]
+    bad = sum(1 for x in q if x < 20)
+    print(f"{rec.id:6} mean {sum(q) / len(q):5.1f}  bases below Q20: {bad}/{len(q)}")
+```
+
+```
+read1  mean  27.0  bases below Q20: 6/36
+read2  mean  40.0  bases below Q20: 0/36
+```
+
+Link: [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+
+## 22. Trimming
+
+Cut the bad parts off. Usually that means the end of the read, where quality
+falls, plus any leftover adapter — the artificial sequence the machine attaches
+to every fragment. Common tools: **fastp**, **Trimmomatic**, **cutadapt**.
+
+Why you care: adapter left in a read will not map, or worse, will map to the
+wrong place. Trimming is the difference between usable and misleading data.
+
+```python
+from Bio import SeqIO
+
+def trim_tail(rec, cutoff=20):
+    """Chop bases off the end while their quality is below the cutoff."""
+    q = rec.letter_annotations["phred_quality"]
+    end = len(q)
+    while end > 0 and q[end - 1] < cutoff:
+        end -= 1
+    return rec[:end]
+
+for rec in SeqIO.parse("data/sample.fastq", "fastq"):
+    print(f"{rec.id:6} {len(rec.seq)} -> {len(trim_tail(rec).seq)} bases")
+```
+
+```
+read1  36 -> 30 bases
+read2  36 -> 36 bases
+```
+
+Slicing a `SeqRecord` slices its quality scores too. That is why `rec[:end]`
+just works and you never handle the two lists separately.
+
+Link: [fastp](https://github.com/OpenGene/fastp)
+
+## 23. Mapping
+
+Find where each read came from in the reference genome. This is the expensive
+step. Tools: **bwa-mem2** or **minimap2** for DNA, **STAR** or **HISAT2** for
+RNA. Output is SAM or BAM.
+
+Why you care: everything downstream is coordinates, and coordinates come from
+here. Mapping quality (MAPQ) tells you how sure the aligner is — a read that
+fits equally well in three places gets MAPQ 0, and you usually throw it away.
+
+```bash
+# SHELL, NOT RUN: these are C programs, not Python packages.
+bwa-mem2 index reference.fasta                       # once per reference
+bwa-mem2 mem reference.fasta reads.fastq.gz \
+  | samtools sort -o aligned.bam
+samtools index aligned.bam                           # makes aligned.bam.bai
+```
+
+The Python side of this stage is reading the result — see point 8 for `pysam`.
+
+Link: [minimap2](https://github.com/lh3/minimap2) · [samtools](https://www.htslib.org/)
+
+## 24. Duplicate marking
+
+The lab step that copies DNA can copy the same fragment many times. Those copies
+are not independent evidence, so they get flagged and ignored. Tools:
+**samtools markdup**, **Picard MarkDuplicates**.
+
+Why you care: forget this and one lucky fragment looks like twenty supporting
+reads, which turns noise into a confident false variant.
+
+```python
+from collections import Counter
+from Bio import SeqIO
+
+seqs = [str(r.seq) for r in SeqIO.parse("data/sample.fastq", "fastq")]
+seqs.append(seqs[0])                       # pretend read1 got copied
+
+counts = Counter(seqs)
+print("total:", len(seqs), " unique:", len(counts))
+print("duplicate rate:", f"{1 - len(counts) / len(seqs):.0%}")
+```
+
+```
+total: 3  unique: 2
+duplicate rate: 33%
+```
+
+Real tools compare mapped positions, not sequence text, because two genuinely
+different fragments can share a sequence by chance.
+
+Link: [samtools markdup](https://www.htslib.org/doc/samtools-markdup.html)
+
+## 25. Variant calling
+
+Compare the piled-up reads to the reference and decide, position by position,
+whether a difference is real. Tools: **bcftools**, **GATK**, **DeepVariant**.
+Output is VCF.
+
+Why you care: this is the stage that produces the actual finding. The Python
+side is reading and filtering the VCF that comes out.
+
+```bash
+# SHELL, NOT RUN
+bcftools mpileup -f reference.fasta aligned.bam \
+  | bcftools call -mv -Ob -o calls.bcf
+```
+
+A VCF data line is tab separated, and the fixed columns are always in this order:
+
+```python
+line = "chr1\t150\trs123\tA\tG\t60\tPASS\tDP=32"
+chrom, pos, vid, ref, alt, qual, filt, info = line.split("\t")
+
+fields = dict(kv.split("=") for kv in info.split(";"))
+print(f"{chrom}:{pos} {ref}>{alt}  qual={qual}  depth={fields['DP']}")
+```
+
+```
+chr1:150 A>G  qual=60  depth=32
+```
+
+Do that for one line to learn the shape, then use `pysam.VariantFile` for real
+files — the header, the INFO types and the sample columns get complicated fast.
+
+Link: [bcftools](https://samtools.github.io/bcftools/)
+
+## 26. Coverage
+
+How many reads sit over each position. Check it before you trust anything: a
+region with no reads produces no variants, which looks identical to a region
+with nothing wrong.
+
+Why you care: "we found no mutation" and "we could not see that region" are
+completely different claims, and only coverage tells them apart.
+
+```python
+from collections import Counter
+
+reads = [(100, 136), (110, 146), (120, 156), (500, 536)]   # start, end
+depth = Counter(pos for start, end in reads for pos in range(start, end))
+
+print("bases covered:", len(depth))
+print("max depth:", max(depth.values()))
+print("mean depth:", round(sum(depth.values()) / len(depth), 2))
+print("depth at 125:", depth[125], "| at 505:", depth[505], "| at 400:", depth[400])
+```
+
+```
+bases covered: 92
+max depth: 3
+mean depth: 1.57
+depth at 125: 3 | at 505: 1 | at 400: 0
+```
+
+For a whole genome, use `samtools depth` or `mosdepth` — a Python loop over
+3 billion positions is the wrong tool.
+
+Link: [mosdepth](https://github.com/brentp/mosdepth)
+
+## 27. RNA-seq counting
+
+For RNA work the question is not "what changed" but "how much of each gene is
+present". So you count how many reads land in each gene. Tools:
+**featureCounts**, **HTSeq**, or **salmon**, which skips full mapping.
+
+Why you care: the output is a plain table of genes by samples. Once you have it,
+the work becomes pandas.
+
+```python
+import pandas as pd
+
+genes = pd.read_csv("data/regions.bed", sep="\t", header=None,
+                    names=["chrom", "start", "end", "gene"])
+reads = [("chr1", 120), ("chr1", 130), ("chr1", 600), ("chr2", 60), ("chr1", 999)]
+
+counts = {g.gene: 0 for g in genes.itertuples()}
+for chrom, pos in reads:
+    for g in genes.itertuples():
+        if g.chrom == chrom and g.start <= pos < g.end:
+            counts[g.gene] += 1
+
+print(counts)
+print("reads assigned:", sum(counts.values()), "of", len(reads))
+```
+
+```
+{'promoter': 2, 'exon1': 1, 'exon2': 1}
+reads assigned: 4 of 5
+```
+
+One read landed at chr1:999, outside every gene, so it counts for nothing. That
+gap is normal and worth reporting — a low assignment rate means something is
+wrong with your annotation or your mapping.
+
+Link: [HTSeq](https://htseq.readthedocs.io/en/master/index.html)
+
+## 28. Differential expression
+
+Given counts for two groups, which genes really changed? Not simply the ones
+with the biggest ratio — a gene with 2 reads against 8 is 4x higher and means
+nothing. You need the statistics. Tools: **DESeq2** and **edgeR** (both R), or
+**PyDESeq2** in Python.
+
+Why you care: this is where a naive fold-change gives confidently wrong answers,
+and it is the most common analysis mistake a programmer makes here.
+
+```python
+import math
+
+for gene, control, treated in [("geneA", 100, 400), ("geneB", 2, 8)]:
+    print(f"{gene}: log2 fold change = {math.log2(treated / control)}")
+```
+
+```
+geneA: log2 fold change = 2.0
+geneB: log2 fold change = 2.0
+```
+
+Identical fold change. Completely different confidence. `geneA` rests on 500
+reads, `geneB` on 10. A real method models that spread and returns a p-value —
+which is precisely why you should not write this analysis yourself.
+
+Link: [PyDESeq2](https://pydeseq2.readthedocs.io/en/stable/)
+
+---
+
+# Beyond Biopython: scikit-bio
+
+Biopython is not the only library. [**scikit-bio**](https://github.com/scikit-bio/scikit-bio)
+is a community-built package that covers the half Biopython does not: statistics.
+
+It is genuinely maintained — version 0.7.3 was released in June 2026, and the
+repository had commits within days of this file being written. BSD-3 licensed,
+Python 3.10 and newer.
+
+**The split is clean:**
+
+| | Biopython | scikit-bio |
+|---|---|---|
+| Best at | reading files, fetching records, sequence operations | statistics, distances, diversity, ordination |
+| Objects | its own `Seq` and `SeqRecord` | numpy and pandas native |
+| Reach for it when | you need to parse or convert something | you need to answer "are these samples different?" |
+
+**Where it earns its place:**
+
+1. **Microbiome and community work.** Alpha diversity (how varied is one sample), beta diversity (how different are two samples), and PERMANOVA to test whether groups truly separate. Biopython has none of this.
+2. **Ordination.** PCoA squashes a distance matrix into two dimensions you can plot — the standard way to show sample similarity.
+3. **Sequences as data.** Its `DNA` object exposes `gc_content()`, `kmer_frequencies()` and motif search through one consistent API, and results come back ready for pandas.
+
+```python
+from skbio import DNA
+from skbio.diversity import alpha
+
+print(DNA("ACGTACGTAC").kmer_frequencies(3))
+print("gc:", round(DNA("ACCGGGTTTTA").gc_content(), 4))
+
+# how varied is one sample, given counts of four species
+print("shannon diversity:", round(alpha.shannon([4, 3, 2, 1]), 4))
+```
+
+```
+{'ACG': 2, 'CGT': 2, 'GTA': 2, 'TAC': 2}
+gc: 0.4545
+shannon diversity: 1.2799
+```
+
+**Install it separately, and know what you are asking for.** It is deliberately
+not in `requirements.txt`:
+
+```bash
+pip install scikit-bio
+```
+
+That pulls scipy, pandas, h5py, statsmodels and biom-format. On Windows,
+biom-format had to **compile from source** during testing, which needs a C
+compiler installed. Biopython arrives as a wheel in seconds; this does not. On
+Linux or macOS it is usually smooth, and conda avoids the problem entirely.
+
+Link: [scikit-bio](https://scikit.bio/) · [GitHub](https://github.com/scikit-bio/scikit-bio)
 
 ---
 

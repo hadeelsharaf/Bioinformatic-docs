@@ -1,6 +1,8 @@
 ﻿# Python for Bioinformatics 
 
-> **New to bioinformatics but comfortable with Python?** Start with **[LEARN.md](LEARN.md)** — 20 short points, each with a snippet you can run. Sample files are in `data/`.
+> **New to bioinformatics but comfortable with Python?** Start with **[LEARN.md](LEARN.md)** — 28 short points, each with a snippet you can run.
+>
+> Companion files: **[GLOSSARY.md](GLOSSARY.md)** for the ten words that block people, and **[PROTEINS.md](PROTEINS.md)** for protein and 3D structure work. Sample files are in `data/`.
 
 Bioinformatics is the field that develops methods and software tools for understanding biological data. Units 6 and 7 in [this course](https://www.khanacademy.org/science/ap-biology) will help with understanding the *basics* of biology for this field.  
 
@@ -11,6 +13,7 @@ DNA in text files is represented as a string with sequence of [specific characte
 - File processing (txt and csv).
 - String and [Regex](https://docs.python.org/3/library/re.html) functions.
 - [BioPython](https://biopython.org/wiki/Documentation).
+- [scikit-bio](https://github.com/scikit-bio/scikit-bio) — the other library, for statistics, distances and diversity. See [LEARN.md](LEARN.md#beyond-biopython-scikit-bio).
 
 *Examples of Functions Bioinformatics:* 
 
