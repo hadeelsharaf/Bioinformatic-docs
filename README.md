@@ -25,7 +25,7 @@ seq = 'ACCGGGTTTTA'
 ```python
 seq.count('T')
 ```
-
+Out:
 ```
 4
 ```
@@ -35,7 +35,7 @@ from collections import Counter
 
 Counter(seq)
 ```
-
+Out:
 ```
 Counter({'T': 4, 'G': 3, 'A': 2, 'C': 2})
 ```
@@ -54,6 +54,7 @@ def reverse_dna(dna):
 reverse_dna(seq)
 ```
 
+Out:
 ```
 TAAAACCCGGT
 ```
@@ -71,6 +72,7 @@ GC_percent = (GC_count * 100) / len(seq)
 print(GC_percent)
 ```
 
+Out:
 ```
 45.45454545454545
 ```
@@ -82,6 +84,7 @@ from Bio import Seq
 
 Seq.transcribe(seq)
 ```
+Out:
 
 ```
 'ACCGGGUUUUA'
@@ -97,6 +100,7 @@ from Bio import Seq
 Seq.translate(rna)
 ```
 
+Out:
 ```
 'MAMAPRTEINSTRING*'
 ```
@@ -115,6 +119,7 @@ import re
 re.findall('(?=(M[^*]*)[*])', 'MAMAPR*MP*M')
 ```
 
+Out:
 ```
 ['MAMAPR', 'MAPR', 'MP']
 ```
@@ -146,6 +151,7 @@ for record in records:
 SeqIO.write(records, 'example.fasta', 'fasta')
 ```
 
+Out:
 ```
 seq1 39
 seq2 36
