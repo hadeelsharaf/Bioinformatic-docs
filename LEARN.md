@@ -34,21 +34,21 @@ say why.
 3. [Strands: reverse complement is not `[::-1]`](#3-strands-reverse-complement-is-not--1)
 4. [Coordinates: the off-by-one that eats everyone](#4-coordinates-the-off-by-one-that-eats-everyone)
 
-**Part 2 — the file formats**
+**Part 2 — the file formats** 
 5. [FASTA](#5-fasta)
 6. [FASTQ and Phred quality scores](#6-fastq-and-phred-quality-scores)
 7. [Everything is gzipped: stream, never `read()`](#7-everything-is-gzipped-stream-never-read)
 8. [SAM / BAM: reads glued to a genome](#8-sam--bam-reads-glued-to-a-genome)
 9. [VCF, BED and GFF: variants and annotations](#9-vcf-bed-and-gff-variants-and-annotations)
 
-**Part 3 — the core operations**
+**Part 3 — the core operations** 
 10. [Translation and codon tables](#10-translation-and-codon-tables)
 11. [GC content (and a removed function that breaks old tutorials)](#11-gc-content-and-a-removed-function-that-breaks-old-tutorials)
 12. [Open reading frames in all six frames](#12-open-reading-frames-in-all-six-frames)
 13. [Pairwise alignment](#13-pairwise-alignment)
 14. [k-mers](#14-k-mers)
 
-**Part 4 — doing real work**
+**Part 4 — doing real work** 
 15. [Get real data: NCBI Entrez](#15-get-real-data-ncbi-entrez)
 16. [BLAST: search by similarity](#16-blast-search-by-similarity)
 17. [pandas and matplotlib on sequences](#17-pandas-and-matplotlib-on-sequences)
@@ -56,7 +56,7 @@ say why.
 19. [Reproducibility: bioconda and workflow managers](#19-reproducibility-bioconda-and-workflow-managers)
 20. [Ethics and licensing](#20-ethics-and-licensing)
 
-**Part 5 — the NGS pipeline, stage by stage**
+**Part 5 — the NGS pipeline, stage by stage** 
 21. [Quality control](#21-quality-control)
 22. [Trimming](#22-trimming)
 23. [Mapping](#23-mapping)
