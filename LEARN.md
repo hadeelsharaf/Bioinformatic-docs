@@ -1,4 +1,4 @@
-﻿# LEARN — Bioinformatics for people who already know Python
+# LEARN — Bioinformatics for people who already know Python
 
 You know Python. You do not know biology. This file is the shortest path
 from there to being useful.
