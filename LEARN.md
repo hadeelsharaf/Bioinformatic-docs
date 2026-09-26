@@ -409,6 +409,14 @@ and the gene may be on the other strand, so 3 more. Six frames total.
 
 Why you care: the one-frame regex version in most tutorials misses most genes.
 
+That regex is `M[^*]*\*`: an `M`, then any run of non-stop characters, then a
+stop (`*`). As a diagram:
+
+![Regex diagram for the ORF pattern: M, then any run of non-star characters, then a star](assets/orf-regex.png)
+
+It only scans one protein string. The code below finds the same pattern in all six
+frames.
+
 ```python
 from Bio import SeqIO
 
