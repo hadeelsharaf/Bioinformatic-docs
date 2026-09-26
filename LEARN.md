@@ -3,7 +3,7 @@
 You know Python. You do not know biology. This file is the shortest path
 from there to being useful.
 
-Twenty points. Each one tells you **what it is**, **why you will hit it**,
+Twenty-eight points. Each one tells you **what it is**, **why you will hit it**,
 and gives a snippet you can paste and run.
 
 Companion files: [GLOSSARY.md](GLOSSARY.md) for the vocabulary that blocks
